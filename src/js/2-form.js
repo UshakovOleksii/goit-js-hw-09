@@ -1,48 +1,40 @@
-const form = document.querySelector('.feedback-form');
-const emailInput = form.elements.email;
-const messageInput = form.elements.message;
-
-const STORAGE_KEY = 'feedback-form-state';
-
-let formData = {
+const formData = {
   email: '',
   message: ''
 };
 
-const savedData = localStorage.getItem(STORAGE_KEY);
-if (savedData) {
-  try {
+window.addEventListener('DOMContentLoaded', () => {
+  const savedData = localStorage.getItem('feedback-form-state');
+  if (savedData) {
     const parsedData = JSON.parse(savedData);
-    formData = { ...formData, ...parsedData };
-
-    if (parsedData.email) emailInput.value = parsedData.email;
-    if (parsedData.message) messageInput.value = parsedData.message;
-  } catch (error) {
-    console.error('Error parsing saved data:', error);
+    formData.email = parsedData.email || '';
+    formData.message = parsedData.message || '';
+    
+    document.querySelector('[name="email"]').value = formData.email;
+    document.querySelector('[name="message"]').value = formData.message;
   }
-}
-
-form.addEventListener('input', event => {
-  const { name, value } = event.target;
-  formData[name] = value.trim();
-  localStorage.setItem(STORAGE_KEY, JSON.stringify(formData));
 });
 
-form.addEventListener('submit', event => {
+document.querySelector('.feedback-form').addEventListener('input', (event) => {
+  const { name, value } = event.target;
+  if (name) {
+    formData[name] = value.trim();
+    localStorage.setItem('feedback-form-state', JSON.stringify(formData));
+  }
+});
+
+document.querySelector('.feedback-form').addEventListener('submit', (event) => {
   event.preventDefault();
 
-  const email = emailInput.value.trim();
-  const message = messageInput.value.trim();
-
-  if (!email || !message) {
+  if (!formData.email || !formData.message) {
     alert('Fill please all fields');
     return;
   }
 
   console.log(formData);
 
-  // Очистка
-  localStorage.removeItem(STORAGE_KEY);
-  formData = { email: '', message: '' };
-  form.reset();
+  localStorage.removeItem('feedback-form-state');
+  formData.email = '';
+  formData.message = '';
+  document.querySelector('.feedback-form').reset();
 });
