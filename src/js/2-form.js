@@ -1,40 +1,47 @@
-const formData = {
+const form = document.querySelector('.feedback-form');
+const emailInput = form.elements.email;
+const messageInput = form.elements.message;
+
+const STORAGE_KEY = 'feedback-form-state';
+
+let formData = {
   email: '',
   message: ''
 };
 
-window.addEventListener('DOMContentLoaded', () => {
-  const savedData = localStorage.getItem('feedback-form-state');
-  if (savedData) {
+const savedData = localStorage.getItem(STORAGE_KEY);
+if (savedData) {
+  try {
     const parsedData = JSON.parse(savedData);
-    formData.email = parsedData.email || '';
-    formData.message = parsedData.message || '';
-    
-    document.querySelector('[name="email"]').value = formData.email;
-    document.querySelector('[name="message"]').value = formData.message;
-  }
-});
+    formData = { ...formData, ...parsedData };
 
-document.querySelector('.feedback-form').addEventListener('input', (event) => {
+    if (parsedData.email) emailInput.value = parsedData.email;
+    if (parsedData.message) messageInput.value = parsedData.message;
+  } catch (error) {
+    console.error('Error parsing saved data:', error);
+  }
+}
+
+form.addEventListener('input', event => {
   const { name, value } = event.target;
-  if (name) {
-    formData[name] = value.trim();
-    localStorage.setItem('feedback-form-state', JSON.stringify(formData));
-  }
+  formData[name] = value.trim();
+  localStorage.setItem(STORAGE_KEY, JSON.stringify(formData));
 });
 
-document.querySelector('.feedback-form').addEventListener('submit', (event) => {
+form.addEventListener('submit', event => {
   event.preventDefault();
 
-  if (!formData.email || !formData.message) {
+  const email = emailInput.value.trim();
+  const message = messageInput.value.trim();
+
+  if (!email || !message) {
     alert('Fill please all fields');
     return;
   }
 
   console.log(formData);
 
-  localStorage.removeItem('feedback-form-state');
-  formData.email = '';
-  formData.message = '';
-  document.querySelector('.feedback-form').reset();
+  localStorage.removeItem(STORAGE_KEY);
+  formData = { email: '', message: '' };
+  form.reset();
 });
