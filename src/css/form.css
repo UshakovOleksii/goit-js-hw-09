@@ -1,42 +1,39 @@
 .feedback-form {
-  display: flex;
-  flex-direction: column;
-  gap: 15px;
-  text-align: left;
-  justify-content: flex-end;
+  width: 300px;
+  margin: 20px auto;
+  padding: 15px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  background-color: #f9f9f9;
 }
 
-.feedback-form label {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: flex-start;
-  gap: 5px;
-  width: 100%;
-}
-
-.feedback-form input,
-.feedback-form textarea {
-  padding: 10px;
-  font-size: 16px;
-  border: 1px solid rgba(0, 0, 0, 0.2);
+input[type='email'],
+textarea {
+  width: 94%;
+  padding: 8px;
+  margin-top: 5px;
+  border: 1px solid black;
   border-radius: 4px;
-  width: 100%;
+  font-size: 14px;
 }
 
-.feedback-form button {
-  padding: 10px 20px;
-  background-color: rgba(78, 117, 255, 1);
+input[type='email']:focus,
+textarea:focus {
+  border-color: #007bff;
+  outline: none;
+}
+
+button {
+  background-color: #007bff;
+  color: white;
+  padding: 10px 15px;
   border: none;
   border-radius: 4px;
-  color: white;
+  font-size: 14px;
   cursor: pointer;
-  font-size: 16px;
-  transition: background-color 0.3s ease;
-  margin-left: auto;
-  position: absolute;
+  width: 100%;
 }
 
-.feedback-form button:hover {
-  background-color: rgba(108, 140, 255, 1);
+button:hover {
+  background-color: #0056b3;
 }
